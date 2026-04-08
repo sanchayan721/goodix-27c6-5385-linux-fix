@@ -2,13 +2,32 @@
 
 configure_build() {
     info "Configuring build..."
+    local -a meson_args
+
     if [[ -d "$LIBFPRINT_DIR/builddir" ]]; then
         info "Removing previous builddir..."
         rm -rf "$LIBFPRINT_DIR/builddir"
     fi
 
+    # Newer Debian/Ubuntu releases may expose only libudev.pc (not udev.pc).
+    # Patch the meson dependency name so configuration works across both layouts.
+    if ! pkg-config --exists udev && pkg-config --exists libudev; then
+        info "Applying libudev pkg-config compatibility patch..."
+        sed -i "s/dependency('udev'/dependency('libudev'/g" "$LIBFPRINT_DIR/meson.build"
+
+        # libudev.pc may not export udevdir. Set dirs explicitly for meson.
+        meson_args+=("-Dudev_rules_dir=/usr/lib/udev/rules.d")
+        meson_args+=("-Dudev_hwdb_dir=/usr/lib/udev/hwdb.d")
+    fi
+
+    # Install into /usr so fprintd uses the patched system library path.
+    meson_args+=("--prefix=/usr")
+
+    # Documentation tooling is optional and often missing on minimal systems.
+    meson_args+=("-Ddoc=false")
+
     pushd "$LIBFPRINT_DIR" >/dev/null
-    meson setup builddir
+    meson setup builddir "${meson_args[@]}"
     popd >/dev/null
 }
 
