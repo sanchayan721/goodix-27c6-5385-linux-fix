@@ -1,0 +1,16 @@
+# Build artifacts (the install script puts these in ~/fpfix/, not here,
+# but ignore them if someone runs a build inside this directory)
+builddir/
+*.o
+*.so
+*.a
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# macOS
+.DS_Store
