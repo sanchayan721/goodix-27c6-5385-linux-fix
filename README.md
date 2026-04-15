@@ -205,6 +205,40 @@ Select **"Fingerprint authentication"** in the menu and confirm. This enables fi
 
 ---
 
+## Optional: TPM-Backed Keyring Unlock
+
+Fingerprint login unlocks your session, but GNOME Keyring still needs the login keyring password to unlock saved secrets automatically. This repository also includes an optional TPM-backed setup that stores your current GNOME login keyring password as a machine-bound secret and unlocks the keyring after fingerprint login.
+
+Install it with:
+
+```bash
+./scripts/tpm-keyring/install.sh
+```
+
+Then enroll your existing login keyring password into TPM:
+
+```bash
+~/.local/bin/tpm-keyring-setup.sh
+```
+
+The setup script will show a warning and require explicit confirmation that if you later reset the GNOME login keyring to recover access, saved logins and secrets stored in that keyring will be lost.
+
+After enrollment, log out fully and log back in. The user service will run:
+
+```bash
+~/.local/bin/tpm-keyring-unlock.sh
+```
+
+### Notes
+
+- This is optional and separate from the Goodix/libfprint driver install.
+- It installs `clevis`, `clevis-tpm2`, and `python3-dbus`.
+- It adds a narrow sudoers rule so your user can run only the TPM encrypt/decrypt wrappers as the `tss` user, without a password.
+- On the validated Dell/Goodix setup in this repository, the TPM path uses `device:/dev/tpm0` by default because `/dev/tpmrm0` was not reliable for the required operations.
+- You must know your current GNOME login keyring password before enrolling it. If your keyring password does not match your account password, fix that first in Seahorse / Passwords and Keys.
+
+---
+
 ## Caveats and Maintenance
 
 ### Library gets overwritten on apt upgrade

@@ -1,0 +1,1 @@
+__USER__ ALL=(tss) NOPASSWD: /usr/local/libexec/tpm-keyring-clevis-encrypt.sh, /usr/local/libexec/tpm-keyring-clevis-decrypt.sh

@@ -1,0 +1,11 @@
+[Unit]
+Description=Unlock GNOME keyring from TPM-bound credential
+After=graphical-session.target
+Wants=graphical-session.target
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/tpm-keyring-unlock.sh
+
+[Install]
+WantedBy=default.target
