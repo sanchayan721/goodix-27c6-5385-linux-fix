@@ -72,6 +72,7 @@ chmod +x install.sh
 The script will:
 - Verify your sensor is present (`27c6:5385` or `27c6:5395`)
 - Install all build dependencies
+- Install runtime packages (`fprintd`, `libpam-fprintd`)
 - Clone libfprint v1.94.10 and the Goodix driver
 - Patch, build, and install the library
 - Deploy the udev rule for `cdc_acm`
@@ -104,6 +105,7 @@ If you prefer to understand each step or the automated script doesn't apply to y
 ```bash
 sudo apt update
 sudo apt install -y \
+    fprintd libpam-fprintd \
     git meson ninja-build pkg-config \
     libglib2.0-dev libgusb-dev \
     libssl-dev libopencv-dev \

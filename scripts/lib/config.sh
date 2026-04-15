@@ -14,3 +14,8 @@ BUILD_DEPS=(
     libcairo2-dev libgudev-1.0-dev
     python3-gi-cairo gir1.2-glib-2.0
 )
+
+RUNTIME_DEPS=(
+    fprintd
+    libpam-fprintd
+)

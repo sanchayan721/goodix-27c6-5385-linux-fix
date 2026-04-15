@@ -35,6 +35,7 @@ main() {
     prepare_workdir
 
     install_build_dependencies
+    install_runtime_dependencies
     clone_or_update_sources
     apply_driver_sources_and_patch
 
